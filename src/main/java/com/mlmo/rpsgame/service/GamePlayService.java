@@ -12,6 +12,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -56,6 +57,7 @@ public class GamePlayService {
         }
     }
 
+    @Transactional
     public Room play(String roomId, int gameNumber, String playerId, Choices choice) {
         Room room = roomService.getRoom(roomId);
         Game game = room.getGame(gameNumber);
@@ -86,6 +88,7 @@ public class GamePlayService {
         return roomService.updateRoomAndSendNotification(room, playerId, ROUND_TURN_PLAY);
     }
 
+    @Transactional
     public Room createNewGame(String roomId, String playerId) {
         Room room = roomService.getRoom(roomId);
 
