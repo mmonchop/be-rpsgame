@@ -23,7 +23,7 @@
 ## Technical Added Features
 - OpenAPI documentation
 - REST API secured using Basic Auth
-- Websockets capability (update player game 2 events)
+- Websockets capability (update events between 2 players - VS_FRIEND or VS_RANDOM_PLAYER modes)
 - Application Metrics to Prometheus
 - Information persisted using MongoDB database
 - Integration Tests & Unit Tests
