@@ -1,0 +1,48 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class MetricsService {
+    MeterRegistry meterRegistry
+}
+
+class RoomService {
+    RoomRepository roomRepository
+    MetricsService metricsService
+    NotificationService notificationService
+    RoomMapper roomMapper
+}
+
+interface RoomRepository {
+}
+
+interface RoomMapper {
+}
+
+interface NotificationService {
+}
+
+class StompNotificationService implements NotificationService {
+    WebSocketStompClient stompClient
+    StompSession stompSession
+}
+
+class GamePlayService {
+    RoomService roomService;
+    RoundResultService roundResultService;
+    MetricsService metricsService;
+}
+
+class RoundResultService {
+    MetricsService metricsService
+}
+
+RoomService --> RoomRepository
+RoomService --> MetricsService
+RoomService --> NotificationService
+RoomService --> RoomMapper
+GamePlayService --> RoomService
+GamePlayService --> MetricsService
+GamePlayService --> RoundResultService
+RoundResultService --> MetricsService
+
+@enduml

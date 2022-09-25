@@ -1,0 +1,106 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class Room {
+    String id
+    Player firstPlayer
+    Player secondPlayer
+    GameModes mode
+    LocalDateTime creationTime
+    LocalDateTime invitationAcceptedTime
+
+    List<Game> games
+}
+
+class Game {
+    int gameNumber
+    LocalDateTime startTime
+    LocalDateTime finishTime
+    GameStates state
+    GameResult result
+
+    List<Round> rounds
+}
+
+class GameResult {
+    Player winner
+    int scoreFirstPlayer
+    int scoreSecondPlayer
+}
+
+class RoundTurn {
+    Player player;
+    Choices choice;
+}
+
+class Round {
+    int roundNumber
+    RoundResult result
+    RoundStates state
+
+    List<RoundTurn> roundTurns
+}
+
+class Player {
+    String id
+    String name
+    PlayerStates playerState
+}
+
+class NotificationEvent {
+    String id
+    NotificationEventType type
+    Map<String, Object> data
+    LocalDateTime eventTime
+}
+
+enum GameModes {
+    VS_MACHINE
+    VS_FRIEND
+    VS_RANDOM_PLAYER
+}
+
+enum GameStates {
+    WAITING
+    ACCEPTED
+    PLAYING
+    OVER
+}
+
+enum RoundStates {
+    PLAYING
+    OVER
+}
+
+enum PlayerStates {
+    READY
+    WAITING
+}
+
+enum Choices {
+    ROCK
+    PAPER
+    SCISSORS
+}
+
+enum NotificationEventType {
+    INVITATION_ACCEPTED
+    ROUND_TURN_PLAY
+    GAME_CLOSED
+}
+
+Room o-- Game
+Room o-- Player
+GameModes <-- Room
+Game o-- GameResult
+GameStates <-- Game
+GameResult o-- Player
+PlayerStates <- Player
+Game o-- Round
+Round o-- RoundTurn
+RoundStates <-- Round
+RoundTurn o-- Player
+RoundTurn -> Choices
+NotificationEvent --> NotificationEventType
+@enduml
