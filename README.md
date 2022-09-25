@@ -3,7 +3,7 @@
 
 ## Functional Added Features
 - 3 game modes:
-  - VS_MACHINE: Opponent moves are generated randomly by machine
+  - VS_MACHINE: Opponent moves are generated randomly by machine 
   - VS_FRIEND: Posible to play with a friend in a created game room
   - VS_RANDOM_PLAYER: Posibility to play with another random player
 - Possibility to play many games with same player in created game room
