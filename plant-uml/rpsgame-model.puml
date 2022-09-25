@@ -42,6 +42,11 @@ class Round {
     List<RoundTurn> roundTurns
 }
 
+class RoundResult {
+    Player winner
+    boolean tie
+}
+
 class Player {
     String id
     String name
@@ -87,7 +92,7 @@ enum Choices {
 enum NotificationEventType {
     INVITATION_ACCEPTED
     ROUND_TURN_PLAY
-    GAME_CLOSED
+    NEW_GAME_CREATED
 }
 
 Room o-- Game
@@ -99,8 +104,10 @@ GameResult o-- Player
 PlayerStates <- Player
 Game o-- Round
 Round o-- RoundTurn
+Round o-- RoundResult
 RoundStates <-- Round
 RoundTurn o-- Player
+RoundResult o-- Player
 RoundTurn -> Choices
 NotificationEvent --> NotificationEventType
 @enduml
