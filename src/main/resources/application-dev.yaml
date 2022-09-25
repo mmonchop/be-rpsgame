@@ -1,0 +1,59 @@
+info:
+  app:
+    name: RpsGame - Backend
+    description: Rock Paper Scissors game - Spring Boot Application
+
+server:
+  port: 8080
+
+spring:
+  mvc:
+    cors: '/**'
+    allowedOrigins: http://localhost:4200/
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/?readPreference=primary&ssl=false
+      database: rpsgame
+  security:
+    mode: basic
+
+rpsgame:
+  game-num-rounds: 3
+  machine-player-name: HAL 9000
+  max-wait-random-player-minutes: 10
+  notifications:
+    mode: stomp
+    stomp:
+      broker-url: ws://localhost:${server.port}/websocket-services
+      rooms-topic-pattern: /app/rooms/%s/publish
+  api-user:
+    username: ${API_REST_USERNAME}
+    password: ${API_REST_PASSWORD}
+
+
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: info,env,health,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  health:
+    probes:
+      enabled: true
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+websocket:
+  stomp:
+    endpoint: /websocket-services
+    allowed-origins: http://localhost:4200

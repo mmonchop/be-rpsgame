@@ -1,0 +1,23 @@
+spring:
+  security:
+    mode: basic
+  mvc:
+    cors: '/**'
+    allowedOrigins: http://localhost:4200/
+
+rpsgame:
+  game-num-rounds: 3
+  machine-player-name: HAL 9000
+  max-wait-random-player-minutes: 10
+  notifications:
+    mode: stomp
+    stomp:
+      rooms-topic-pattern: /app/rooms/%s/publish
+  api-user:
+    username: test
+    password: test
+
+websocket:
+  stomp:
+    endpoint: /websocket-services
+    allowed-origins: http://localhost:4200
