@@ -1,4 +1,4 @@
-# RGPGame - backend
+# RPSGame - backend
 ### Coding Challenge: Miguel Moncho
 
 ## Functional Added Features
