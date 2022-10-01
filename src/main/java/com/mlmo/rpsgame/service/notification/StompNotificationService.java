@@ -76,7 +76,7 @@ public class StompNotificationService implements NotificationService {
     }
 
     @Retryable(value = MessageDeliveryException.class, maxAttempts = 5, backoff = @Backoff(delay = 1000L))
-    public void sendNotification(NotificationEvent notificationEvent, String destination) {
+    public synchronized void sendNotification(NotificationEvent notificationEvent, String destination) {
         try {
             Optional.ofNullable(stompSession)
                     .ifPresent(session -> stompSession.send(destination, notificationEvent));

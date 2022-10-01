@@ -32,6 +32,9 @@
 - Included 2 PlantUML diagrams:
   - `plant-uml/rpsgame-model.puml` (Model Class diagram)
   - `plant-uml/rpsgame-services.puml` (Services Class diagram)
+- Gatling simulations:
+  - Create room: `gatling/simulations/rps-game-create-room-dev.scala`
+  - Stress test simulation results in `gatling/results` (.zip file)
 
 ## Maven - Run
 
