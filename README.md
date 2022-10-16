@@ -1,7 +1,7 @@
 # RPSGame - backend
 ### Coding Challenge: Miguel Moncho
 
-## Functional Added Features
+## Functional Added Features (26-Sep)
 - 3 game modes:
   - VS_MACHINE: Opponent moves are generated randomly by machine
   - VS_FRIEND: Posible to play with a friend in a created game room
@@ -20,7 +20,7 @@
   - `rpsgame-turns-played-count`: Number of turns played
 - Multi-language
 
-## Technical Added Features
+## Technical Added Features (26-Sep)
 - OpenAPI documentation
 - REST API secured using Basic Auth
 - Websockets capability (update events between 2 players - VS_FRIEND or VS_RANDOM_PLAYER modes)
@@ -32,13 +32,16 @@
 - Included 2 PlantUML diagrams:
   - `plant-uml/rpsgame-model.puml` (Model Class diagram)
   - `plant-uml/rpsgame-services.puml` (Services Class diagram)
+
+**_New features added (1-Oct)_**
 - Gatling simulations:
   - Create room: `gatling/simulations/rps-game-create-room-dev.scala`
   - Stress test simulation results in `gatling/results` (.zip file)
+- Notifications when player leaves game (`window:beforeunload` events)  
 
-**_New features added (15-Oct)_**
-- REST API supports OAuth 2.0 Authentication Code flow with PKCE
-- Secured websockets API
+**_New features added (16-Oct)_**
+- REST API supports OAuth 2.0 Authentication Code flow with PKCE. JWT tokens
+- Secure websockets API
 
 ## Maven - Run
 
