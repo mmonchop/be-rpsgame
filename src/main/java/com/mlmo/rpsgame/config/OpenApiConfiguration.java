@@ -76,12 +76,10 @@ public class OpenApiConfiguration {
                 .tokenUrl(tokenUrl)
                 .scopes(scopes);
 
-        SecurityScheme securityScheme = new SecurityScheme()
+        return new SecurityScheme()
                 .name(SECURITY_SCHEME_NAME)
                 .in(SecurityScheme.In.HEADER).name(AUTHORIZATION)
                 .type(SecurityScheme.Type.OAUTH2)
                 .flows(new OAuthFlows().authorizationCode(authorizationCodeFlow));
-
-        return securityScheme;
     }
 }
