@@ -35,7 +35,7 @@ public class RoomController {
     private final RoomService roomService;
 
 
-    @PreAuthorize ("hasRole('PLAYER_ROLE')")
+    @PreAuthorize ("hasRole('PLAYER_ROLE') or hasAuthority('SCOPE_user.read')")
     @GetMapping(value = {"/rooms/{roomId}"}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Obtain Room", description = "Obtain room information", responses = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RoomDto.class))),
@@ -50,7 +50,7 @@ public class RoomController {
     }
 
 
-    @PreAuthorize ("hasRole('PLAYER_ROLE')")
+    @PreAuthorize ("hasRole('PLAYER_ROLE') or hasAuthority('SCOPE_user.read')")
     @PostMapping(value = {"/rooms"}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Create RpsGame room", description = "Create a RpsGame room", responses = {
             @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RoomDto.class))),
@@ -68,7 +68,7 @@ public class RoomController {
     }
 
 
-    @PreAuthorize ("hasRole('PLAYER_ROLE')")
+    @PreAuthorize ("hasRole('PLAYER_ROLE') or hasAuthority('SCOPE_user.read')")
     @PostMapping(value = {"/rooms/{roomId}/accept-invite"}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Accept Room Invitation", description = "Accept Room Invitation (VS_FRIEND game mode)", responses = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RoomDto.class))),

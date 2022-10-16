@@ -14,23 +14,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.session.SessionManagementFilter;
-import org.springframework.web.filter.CorsFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mlmo.rpsgame.config.OpenApiConfiguration.BASIC;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@ConditionalOnProperty(prefix = "spring.security", name = "mode", havingValue = "basic")
+@ConditionalOnProperty(prefix = "spring.security", name = "scheme", havingValue = BASIC)
 public class BasicAuthWebSecurityConfiguration {
 
-    private static final String PLAYER_ROLE = "PLAYER_ROLE";
+    static final String PLAYER_ROLE = "PLAYER_ROLE";
 
-    private static final String[] AUTH_ACTUATOR_WHITELIST = {"/actuator/**"};
-    private static final String[] AUTH_WEBSOCKET_STOMP_WHITELIST = {"/websocket-services/**"};
-    private static final String[] AUTH_SWAGGER_UI_WHITELIST = {
+    static final String[] AUTH_ACTUATOR_WHITELIST = {"/actuator/**"};
+    static final String[] AUTH_SWAGGER_UI_WHITELIST = {
             "/v3/api-docs/**", "/swagger-resources/**", "/configuration/**", "/swagger/**",
             "/swagger-ui/**", "/swagger-ui.html", "/webjars/**"};
 
@@ -41,14 +40,13 @@ public class BasicAuthWebSecurityConfiguration {
     private String apiPassword;
 
     @Bean
-    public SecurityFilterChain filterChain(CorsFilter corsFilter, HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .addFilterBefore(corsFilter, SessionManagementFilter.class)
+                .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(AUTH_SWAGGER_UI_WHITELIST).permitAll()
                 .antMatchers(AUTH_ACTUATOR_WHITELIST).permitAll()
-                .antMatchers(AUTH_WEBSOCKET_STOMP_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic(Customizer.withDefaults())

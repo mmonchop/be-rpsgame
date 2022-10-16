@@ -34,7 +34,7 @@ public class GamePlayController {
     private final RoomMapper roomMapper;
     private final GamePlayService gamePlayService;
 
-    @PreAuthorize ("hasRole('PLAYER_ROLE')")
+    @PreAuthorize ("hasRole('PLAYER_ROLE') or hasAuthority('SCOPE_user.read')")
     @PostMapping(value = {"/rooms/{roomId}/games/{gameNumber}/play"}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Play a RPS turn", description = "Play a RPS turn for a given room & game", responses = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RoomDto.class))),
@@ -53,7 +53,7 @@ public class GamePlayController {
         return new ResponseEntity<>(roomMapper.roomToDto(room), HttpStatus.OK);
     }
 
-    @PreAuthorize ("hasRole('PLAYER_ROLE')")
+    @PreAuthorize ("hasRole('PLAYER_ROLE') or hasAuthority('SCOPE_user.read')")
     @PostMapping(value = {"/rooms/{roomId}/games"}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Creates a new game in room", description = "Creates a new game in provided room", responses = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = RoomDto.class))),

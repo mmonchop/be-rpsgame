@@ -3,7 +3,7 @@
 
 ## Functional Added Features
 - 3 game modes:
-  - VS_MACHINE: Opponent moves are generated randomly by machine 
+  - VS_MACHINE: Opponent moves are generated randomly by machine
   - VS_FRIEND: Posible to play with a friend in a created game room
   - VS_RANDOM_PLAYER: Posibility to play with another random player
 - Possibility to play many games with same player in created game room
@@ -36,18 +36,34 @@
   - Create room: `gatling/simulations/rps-game-create-room-dev.scala`
   - Stress test simulation results in `gatling/results` (.zip file)
 
+**_New features added (15-Oct)_**
+- REST API supports OAuth 2.0 Authentication Code flow with PKCE
+- Secured websockets API
+
 ## Maven - Run
 
 ```sh
 clean install jacoco:report spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=dev
 ```
-### Environment Variables required:
-REST API is protected with Basic Auth, following ENV variables need to be provided in order to create a default user with Spring Security.
+### Environment Variables required (profile=dev):
+REST API is protected with **Basic Auth**, following ENV variables need to be provided in order to create a default user with Spring Security.
 
-| Name | Value |
-| ------ | ------ |
-| API_REST_USERNAME | rpsplayer |
-| API_REST_PASSWORD | ****** |
+| Name | Value | Comments |
+| ------ | -- | -- |
+| API_REST_USERNAME | rpsplayer | User is created in `InMemoryUserDetailsManager` |
+| API_REST_PASSWORD | password | Password for user created in memory |
+
+#### Configuration using OAuth 2.0 security (profile=dev-oauth2):
+Authorization Code flow with PKCE using Azure AD (password / secrets to be provided in Slack chat)
+```sh
+clean install jacoco:report spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=dev-oauth2
+```
+
+| Name | Value | Comments |
+| ------ | ------ | -- |
+| API_REST_USERNAME | user@mmonchopgmail.onmicrosoft.com | |
+| API_REST_PASSWORD | ****** | To be provided in Slack |
+| AZURE_AD_CLIENT_SECRET | ****** | To be provided in Slack |
 
 ## Class diagram (Services):
 - Main classes in services layer:

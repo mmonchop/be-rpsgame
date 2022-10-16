@@ -15,7 +15,17 @@ spring:
       uri: mongodb://localhost:27017/?readPreference=primary&ssl=false
       database: rpsgame
   security:
-    scheme: basic
+    scheme: oauth2
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/d9671427-bbc1-42b0-8fac-322502dcff43/v2.0
+      client:
+        auth-url: https://login.microsoftonline.com/d9671427-bbc1-42b0-8fac-322502dcff43/oauth2/v2.0/authorize
+        token-url: https://login.microsoftonline.com/d9671427-bbc1-42b0-8fac-322502dcff43/oauth2/v2.0/token
+        client-id: b81d2364-cc92-4509-9aaf-937ab827a7c0
+        client-secret: ${AZURE_AD_CLIENT_SECRET}
+        scope: api://b81d2364-cc92-4509-9aaf-937ab827a7c0/user.read
 
 rpsgame:
   game-num-rounds: 3
@@ -35,6 +45,9 @@ springdoc:
     csrf:
       enabled: true
     disable-swagger-default-url: true
+    oauth:
+      usePkceWithAuthorizationCodeGrant: true
+      client-id: b81d2364-cc92-4509-9aaf-937ab827a7c0
 
 management:
   security:

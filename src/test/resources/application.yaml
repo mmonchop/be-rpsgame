@@ -1,6 +1,6 @@
 spring:
   security:
-    mode: basic
+    scheme: basic
   mvc:
     cors: '/**'
     allowedOrigins: http://localhost:4200/

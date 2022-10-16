@@ -17,6 +17,7 @@ import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
@@ -37,17 +38,28 @@ import java.util.concurrent.ExecutionException;
 public class StompNotificationService implements NotificationService {
 
     private final String stompBrokerUrl;
+    private final String stompUsername;
+    private final String stompPassword;
+
+    private StompSession stompSession;
     private final WebSocketStompClient stompClient;
-    StompSession stompSession;
+    private final WebSocketHttpHeadersBuilder webSocketHttpHeadersBuilder;
 
     @Autowired
-    public StompNotificationService(@Value("${rpsgame.notifications.stomp.broker-url:#{null}}") String stompBrokerUrl) {
+    public StompNotificationService(@Value("${rpsgame.notifications.stomp.broker-url:#{null}}") String stompBrokerUrl,
+                                    @Value("${rpsgame.api-user.username}") String stompUsername,
+                                    @Value("${rpsgame.api-user.password}") String stompPassword,
+                                    WebSocketHttpHeadersBuilder webSocketHttpHeadersBuilder) {
+        this.stompUsername = stompUsername;
+        this.stompPassword = stompPassword;
         this.stompBrokerUrl = stompBrokerUrl;
+        this.webSocketHttpHeadersBuilder = webSocketHttpHeadersBuilder;
 
         List<Transport> transports = new ArrayList<>(1);
         transports.add(new WebSocketTransport(new StandardWebSocketClient()));
         WebSocketClient transport = new SockJsClient(transports);
         stompClient = new WebSocketStompClient(transport);
+
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.setObjectMapper(objectMapper);
@@ -63,7 +75,8 @@ public class StompNotificationService implements NotificationService {
         if (StringUtils.isNotEmpty(stompBrokerUrl)) {
             StompClientSessionHandler sessionHandler = new StompClientSessionHandler();
             try {
-                stompSession = stompClient.connect(stompBrokerUrl, sessionHandler).get();
+                WebSocketHttpHeaders webSocketHttpHeaders = webSocketHttpHeadersBuilder.getWebsocketHttpHeaders(this.stompUsername, this.stompPassword);
+                stompSession = stompClient.connect(stompBrokerUrl, webSocketHttpHeaders, sessionHandler).get();
             } catch (InterruptedException | ExecutionException e) {
                 log.severe("Error connecting to STOMP Message Broker");
                 Thread.currentThread().interrupt();
