@@ -31,7 +31,7 @@ public class OauthWebSecurityConfiguration extends WebSecurityConfigurerAdapter 
                 .anyRequest().authenticated();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter);
+        http.oauth2ResourceServer().bearerTokenResolver(new CustomBearerTokenResolver()).jwt().jwtAuthenticationConverter(jwtAuthenticationConverter);
     }
 
 }

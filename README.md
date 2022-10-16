@@ -3,7 +3,7 @@
 
 ## Functional Added Features
 - 3 game modes:
-  - VS_MACHINE: Opponent moves are generated randomly by machine 
+  - VS_MACHINE: Opponent moves are generated randomly by machine
   - VS_FRIEND: Posible to play with a friend in a created game room
   - VS_RANDOM_PLAYER: Posibility to play with another random player
 - Possibility to play many games with same player in created game room
@@ -59,11 +59,11 @@ Authorization Code flow with PKCE using Azure AD (password / secrets to be provi
 clean install jacoco:report spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=dev-oauth2
 ```
 
-| Name | Value |
-| ------ | ------ |
-| API_REST_USERNAME | user@mmonchopgmail.onmicrosoft.com |
-| API_REST_PASSWORD | ****** |
-| AZURE_AD_CLIENT_SECRET | ****** |
+| Name | Value | Comments |
+| ------ | ------ | -- |
+| API_REST_USERNAME | user@mmonchopgmail.onmicrosoft.com | |
+| API_REST_PASSWORD | ****** | To be provided in Slack |
+| AZURE_AD_CLIENT_SECRET | ****** | To be provided in Slack |
 
 ## Class diagram (Services):
 - Main classes in services layer:
