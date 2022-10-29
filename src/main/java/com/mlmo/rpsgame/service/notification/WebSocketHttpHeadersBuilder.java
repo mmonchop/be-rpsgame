@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
@@ -28,7 +29,7 @@ import static com.mlmo.rpsgame.config.OpenApiConfiguration.OAUTH2;
 @ConditionalOnProperty(prefix = "rpsgame.notifications", name = "mode", havingValue = "stomp")
 public class WebSocketHttpHeadersBuilder {
 
-    private static final String ACCESS_TOKEN = "access_token";
+    static final String ACCESS_TOKEN = "access_token";
 
     private final String securityScheme;
 
@@ -36,7 +37,10 @@ public class WebSocketHttpHeadersBuilder {
     private final String tokenUrl;
     private final String clientId;
     private final String clientSecret;
+    private RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
+    @Autowired
     public WebSocketHttpHeadersBuilder(@Value("${spring.security.scheme}") String securityScheme,
                                        @Value("${spring.security.oauth2.client.token-url:#{null}}") String tokenUrl,
                                        @Value("${spring.security.oauth2.client.client-id:#{null}}") String clientId,
@@ -47,6 +51,13 @@ public class WebSocketHttpHeadersBuilder {
         this.scope = scope;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.restTemplate = new RestTemplate();
+        this.objectMapper = new ObjectMapper();
+    }
+
+    WebSocketHttpHeadersBuilder(String securityScheme, String tokenUrl, String clientId, String clientSecret, String scope, RestTemplate restTemplate) {
+        this(securityScheme, tokenUrl, clientId, clientSecret, scope);
+        this.restTemplate = restTemplate;
     }
 
     public WebSocketHttpHeaders getWebsocketHttpHeaders(String stompUsername, String stompPassword) {
@@ -69,12 +80,10 @@ public class WebSocketHttpHeadersBuilder {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-            RestTemplate restTemplate = new RestTemplate();
             MultiValueMap<String, String> passwordCredentialsGrantParams = getPasswordCredentialsGrantParams(stompUsername, stompPassword);
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(passwordCredentialsGrantParams, httpHeaders);
-            ResponseEntity<String> responseEntity = restTemplate.exchange(this.tokenUrl, HttpMethod.POST, request, String.class);
+            ResponseEntity<String> responseEntity = this.restTemplate.exchange(this.tokenUrl, HttpMethod.POST, request, String.class);
 
-            ObjectMapper objectMapper = new ObjectMapper();
             JsonNode root = objectMapper.readTree(responseEntity.getBody());
             String accessToken = root.get(ACCESS_TOKEN).asText();
 

@@ -1,7 +1,5 @@
 package com.mlmo.rpsgame.config;
 
-import io.micrometer.core.aop.CountedAspect;
-import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -25,15 +23,5 @@ public class MetricsConfiguration {
                 .commonTags(
                         "app", appName,
                         "env", profile);
-    }
-
-    @Bean
-    public CountedAspect countedAspect(MeterRegistry meterRegistry) {
-        return new CountedAspect(meterRegistry);
-    }
-
-    @Bean
-    public TimedAspect timedAspect(MeterRegistry meterRegistry) {
-        return new TimedAspect(meterRegistry);
     }
 }
